@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationProps} from '../../navigation/types';
 import {useForm} from '../../hooks/useForm';
-import {validationSchema} from '../../validation/schemas/loginSchema';
+import {Values, validationSchema} from '../../validation/schemas/loginSchema';
 import {Text, Button, TouchableOpacity} from 'react-native';
 import {
   FormContainer,
@@ -14,7 +14,7 @@ import {
 } from '../../styles/Form';
 
 const Login = ({navigation}: NavigationProps): JSX.Element => {
-  const initialValues = {
+  const initialValues: Values = {
     email: '',
     password: '',
   };

@@ -2,7 +2,7 @@ import React from 'react';
 import {Keyboard} from 'react-native';
 import {NavigationProps} from '../../navigation/types';
 import {useForm} from '../../hooks/useForm';
-import {validationSchema} from '../../validation/schemas/addressSchema';
+import {Values, validationSchema} from '../../validation/schemas/addressSchema';
 import {Button, TouchableOpacity} from 'react-native';
 import {
   FormContainer,
@@ -14,7 +14,7 @@ import {
 import {LeftArrow} from '../../styles/Global';
 
 const Address = ({navigation}: NavigationProps): JSX.Element => {
-  const initialValues = {
+  const initialValues: Values = {
     street: '',
     country: '',
     city: '',

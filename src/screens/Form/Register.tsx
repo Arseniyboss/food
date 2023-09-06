@@ -1,7 +1,10 @@
 import React from 'react';
 import {NavigationProps} from '../../navigation/types';
 import {useForm} from '../../hooks/useForm';
-import {validationSchema} from '../../validation/schemas/registerSchema';
+import {
+  Values,
+  validationSchema,
+} from '../../validation/schemas/registerSchema';
 import {Text, Button, TouchableOpacity} from 'react-native';
 import {
   FormContainer,
@@ -14,7 +17,7 @@ import {
 } from '../../styles/Form';
 
 const Register = ({navigation}: NavigationProps): JSX.Element => {
-  const initialValues = {
+  const initialValues: Values = {
     username: '',
     email: '',
     password: '',

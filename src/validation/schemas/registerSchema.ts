@@ -1,4 +1,4 @@
-import {FieldValidation} from '../../hooks/useForm';
+import {ValidationSchema} from '../../hooks/useForm';
 import {
   USERNAME_REQUIRED,
   USERNAME_INVALID,
@@ -7,21 +7,21 @@ import {
   PASSWORD_REQUIRED,
   PASSWORD_INVALID,
 } from './../../constants/validation/errors';
-import {
-  PASSWORD_MINLENGTH,
-  EMAIL_REGEX,
-} from '../../constants/validation/patterns';
+import {EMAIL_REGEX} from '../../constants/validation/patterns';
 
-type InitialValues = {
+export type Values = {
   username: string;
   email: string;
   password: string;
 };
 
-export const validationSchema: FieldValidation<InitialValues> = {
+export const validationSchema: ValidationSchema<Values> = {
   username: {
     required: {value: true, message: USERNAME_REQUIRED},
-    minLength: {value: 3, message: USERNAME_INVALID},
+    isValid: {
+      value: username => username.length >= 3,
+      message: USERNAME_INVALID,
+    },
   },
   email: {
     required: {value: true, message: EMAIL_REQUIRED},
@@ -29,6 +29,9 @@ export const validationSchema: FieldValidation<InitialValues> = {
   },
   password: {
     required: {value: true, message: PASSWORD_REQUIRED},
-    minLength: {value: PASSWORD_MINLENGTH, message: PASSWORD_INVALID},
+    isValid: {
+      value: password => password.length >= 6,
+      message: PASSWORD_INVALID,
+    },
   },
 };

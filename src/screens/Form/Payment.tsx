@@ -5,7 +5,7 @@ import {usePaymentForm} from '../../hooks/usePaymentForm';
 import {useUserContext} from '../../contexts/UserContext';
 import {Button, TouchableOpacity} from 'react-native';
 import {NavigationProps} from '../../navigation/types';
-import {validationSchema} from '../../validation/schemas/paymentSchema';
+import {Values, validationSchema} from '../../validation/schemas/paymentSchema';
 import {LeftArrow} from '../../styles/Global';
 import {
   FormContainer,
@@ -23,7 +23,7 @@ import {getCurrentDate} from '../../helpers/getCurrentDate';
 const Payment = ({navigation}: NavigationProps): JSX.Element => {
   const [success, setSuccess] = useState(false);
 
-  const initialValues = {
+  const initialValues: Values = {
     cardNumber: '',
     cardholderName: '',
     expiryDate: '',

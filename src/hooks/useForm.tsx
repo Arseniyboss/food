@@ -7,80 +7,61 @@ import {
 } from 'react';
 import {validate} from '../validation/validate';
 
-export type ValidationSchema<T> = {
-  required?: {
+export type ValidationOptions<T, P> = {
+  required: {
     value: boolean;
     message: string;
   };
-  pattern?: {
-    value: RegExp | ((inputValue: string) => boolean);
+  pattern: {
+    value: RegExp;
     message: string;
   };
-  isValid?: {
+  isValid: {
     value: (inputValue: string) => boolean;
     message: string;
   };
-  ref?: {
-    value: keyof T;
-    pattern: (currentInputValue: string, refInputValue: string) => boolean;
-    message: string;
-  };
-  min?: {
-    value: number;
-    message: string;
-  };
-  max?: {
-    value: number;
-    message: string;
-  };
-  minLength?: {
-    value: number;
-    message: string;
-  };
-  maxLength?: {
-    value: number;
-    message: string;
-  };
-  length?: {
-    value: number;
-    message: string;
-  };
-  match?: {
-    ref: keyof T;
+  match: {
+    ref: Exclude<keyof T, P>;
     message: string;
   };
 };
 
-export type FieldValidation<T> = Partial<Record<keyof T, ValidationSchema<T>>>;
-export type Errors<T> = Partial<Record<keyof T, string>>;
+export type FieldValidation<T> = {
+  [P in keyof T]: Partial<ValidationOptions<T, P>>;
+};
+
+export type ValidationSchema<T> = Partial<FieldValidation<T>>;
 
 type SetValues<T> = Dispatch<SetStateAction<T>>;
+
+export type Errors<T> = Partial<Record<keyof T, string>>;
 
 type ReturnValues<T> = {
   values: T;
   setValues: SetValues<T>;
   errors: Errors<T>;
-  handleChangeText: (key: keyof T, value: string | boolean) => void;
+  handleChangeText: (key: keyof T, value: string) => void;
   handlePress: () => void;
 };
 
-export const useForm = <T,>(options: {
+export const useForm = <T extends Record<string, string>>(options: {
   initialValues: T;
   onSubmit: () => void;
-  validationSchema?: FieldValidation<T>;
+  validationSchema?: ValidationSchema<T>;
 }): ReturnValues<T> => {
   const {initialValues, onSubmit, validationSchema} = options;
 
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Errors<T>>({});
-  const [isChanging, setIsChanging] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isChanging, setIsChanging] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const isValid = Object.keys(errors).length === 0;
 
   const validateOnSubmit = () => {
-    if (validationSchema && !isSubmitted) {
+    if (validationSchema && isValid) {
       setErrors(validate(values, validationSchema));
-      setIsChanging(false);
       setIsSubmitted(true);
     }
   };
@@ -92,15 +73,16 @@ export const useForm = <T,>(options: {
     }
   }, [validationSchema, values, isSubmitted, isChanging]);
 
-  const handleChangeText = (key: keyof T, value: string | boolean) => {
+  const handleChangeText = (key: keyof T, value: string) => {
     setValues({...values, [key]: value});
     setIsChanging(true);
     setIsSubmitting(false);
   };
 
   const handlePress = () => {
-    setIsSubmitting(true);
     validateOnSubmit();
+    setIsSubmitting(true);
+    setIsChanging(false);
   };
 
   useEffect(() => {
@@ -108,18 +90,12 @@ export const useForm = <T,>(options: {
   }, [validateOnChange]);
 
   useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmitting) {
+    if (isValid && isSubmitting) {
       onSubmit();
       setIsSubmitting(false);
       setIsSubmitted(false);
     }
-  }, [errors, isSubmitting, onSubmit]);
+  }, [errors, isValid, isSubmitting, onSubmit]);
 
-  return {
-    values,
-    setValues,
-    errors,
-    handleChangeText,
-    handlePress,
-  };
+  return {values, setValues, errors, handleChangeText, handlePress};
 };

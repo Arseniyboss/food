@@ -1,4 +1,3 @@
-export const PASSWORD_MINLENGTH = 8;
 export const EMAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 export const STREET_PATTERN = /^[a-zA-Z0-9/., ]+$/;
 export const COUNTRY_PATTERN = /^[a-zA-Z- ]+$/;

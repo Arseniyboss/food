@@ -1,4 +1,4 @@
-import {FieldValidation} from '../../hooks/useForm';
+import {ValidationSchema} from '../../hooks/useForm';
 import {validateExpiryDate} from '../../helpers/validateExpiryDate';
 import {
   CARD_NUMBER_REQUIRED,
@@ -18,14 +18,14 @@ import {
   CVV_PATTERN,
 } from '../../constants/validation/patterns';
 
-type InitialValues = {
+export type Values = {
   cardNumber: string;
   cardholderName: string;
   expiryDate: string;
   cvv: string;
 };
 
-export const validationSchema: FieldValidation<InitialValues> = {
+export const validationSchema: ValidationSchema<Values> = {
   cardNumber: {
     required: {value: true, message: CARD_NUMBER_REQUIRED},
     pattern: {value: CARD_NUMBER_PATTERN, message: CARD_NUMBER_INVALID},
