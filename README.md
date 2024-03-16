@@ -12,13 +12,14 @@ Food Delivery App built with React Native
 
 ## Commands
 
-| Command                   | Action                                  |
-| ------------------------- | --------------------------------------- |
-| npm install               | installs dependencies                   |
-| npm run ios               | starts the app in development mode      |
-| npm run compile           | detects typescript errors               |
-| npm run update:latest     | updates dependencies to latest versions |
-| npm run link:dependencies | links dependencies to the ios folder    |
+| Command                   | Action                                                 |
+| ------------------------- | ------------------------------------------------------ |
+| npm install               | installs dependencies                                  |
+| npm run ios               | starts the app in development mode                     |
+| npm run compile           | detects typescript errors                              |
+| npm run update:latest     | updates dependencies to latest versions                |
+| npm run link:dependencies | links dependencies to the ios folder                   |
+| npm run setup             | installs dependencies and links them to the ios folder |
 
 ## Pages
 
